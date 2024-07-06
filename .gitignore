@@ -1,13 +1,21 @@
 node_modules
+package-lock.json
 .env
-
+.vscode/settings.json
 # Hardhat files
 /cache
 /artifacts
+/logs
+
+#hyperleadger
+fabric-samples/
+fablo-target/
+/financial-wallet
 
 # TypeChain files
 /typechain
 /typechain-types
+
 
 # solidity-coverage files
 /coverage

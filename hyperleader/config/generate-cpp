@@ -1,0 +1,43 @@
+#!/bin/bash
+
+function one_line_pem {
+    # Using awk to remove newlines and return a single line PEM
+    echo "`awk 'NF {sub(/\\n/, ""); printf "%s\\\\\\\n",$0;}' $1`"
+}
+
+# Function to generate JSON config
+function generate_json {
+    local ORG=$1
+    local P0PORT=$2
+    local CAPORT=$3
+    local PEERPEM=$(one_line_pem $4)
+    local CAPEM=$(one_line_pem $5)
+    
+    # Debug statement to indicate function operation
+    echo "Generating JSON for $ORG..."
+    
+    # Using sed to substitute values in the template and output directly
+    sed -e "s/\${ORG}/$ORG/" \
+        -e "s/\${P0PORT}/$P0PORT/" \
+        -e "s/\${CAPORT}/$CAPORT/" \
+        -e "s#\${PEERPEM}#$PEERPEM#" \
+        -e "s#\${CAPEM}#$CAPEM#" \
+        ccp-template.json
+}
+
+# Organization configurations
+ORG1=financial
+P0PORT1=7061
+CAPORT1=7060
+PEERPEM1=../fablo-target/fabric-config/crypto-config/peerOrganizations/financial.supplychain.com/tlsca/tlsca.financial.supplychain.com-cert.pem
+CAPEM1=$PEERPEM1
+
+ORG2=company
+P0PORT2=7041
+CAPORT2=7040
+PEERPEM2=../fablo-target/fabric-config/crypto-config/peerOrganizations/company.supplychain.com/tlsca/tlsca.company.supplychain.com-cert.pem
+CAPEM2=$PEERPEM2
+
+# Generate and redirect output to JSON files
+generate_json $ORG1 $P0PORT1 $CAPORT1 $PEERPEM1 $CAPEM1 > connection-profile-financial.json
+generate_json $ORG2 $P0PORT2 $CAPORT2 $PEERPEM2 $CAPEM2 > connection-profile-company.json

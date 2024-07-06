@@ -1,0 +1,35 @@
+{
+    "name": "fablo-test-network-company",
+    "description": "Connection profile for company in the Fablo network",
+    "version": "1.0.0",
+    "client": {
+        "organization": "company"
+    },
+    "organizations": {
+        "company": {
+            "mspid": "companyMSP",
+            "peers": ["peer0.company.supplychain.com"],
+            "certificateAuthorities": ["ca.company.supplychain.com"]
+        }
+    },
+    "peers": {
+        "peer0.company.supplychain.com": {
+            "url": "grpc://localhost:7041",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICdTCCAhugAwIBAgIQZwkiuAjiQ7rkrJRNA2G98TAKBggqhkjOPQQDAjCBhDEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xIDAeBgNVBAoTF2NvbXBhbnkuc3VwcGx5Y2hhaW4uY29tMSYwJAYD\nVQQDEx10bHNjYS5jb21wYW55LnN1cHBseWNoYWluLmNvbTAeFw0yNDA3MDUxMTE1\nMDBaFw0zNDA3MDMxMTE1MDBaMIGEMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2Fs\naWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNjbzEgMB4GA1UEChMXY29tcGFu\neS5zdXBwbHljaGFpbi5jb20xJjAkBgNVBAMTHXRsc2NhLmNvbXBhbnkuc3VwcGx5\nY2hhaW4uY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfE5l5+yN9H3m8320\nPgHnuL48CVOqxOepKtAsZgQZDBryIkkGeYt/mCTG1Oq6tRvJlbcnHoDUvnKJhDnT\n02V2BaNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggr\nBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQiBCCl/Klh8umkn6ksU5wD\nu3zKnsUumqeABYxoehfWyYnm0DAKBggqhkjOPQQDAgNIADBFAiBZgPsb1mFZ25s1\nSab4YwJVH1+mWfWirBYfjYpo2bWHdgIhAMF77LJgRZNTq5AVAStTUIAnkfT6dB+R\nZkH73+lpW78L\n-----END CERTIFICATE-----\n"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.company.supplychain.com": {
+            "url": "http://localhost:7040",
+            "caName": "ca.company.supplychain.com",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICdTCCAhugAwIBAgIQZwkiuAjiQ7rkrJRNA2G98TAKBggqhkjOPQQDAjCBhDEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xIDAeBgNVBAoTF2NvbXBhbnkuc3VwcGx5Y2hhaW4uY29tMSYwJAYD\nVQQDEx10bHNjYS5jb21wYW55LnN1cHBseWNoYWluLmNvbTAeFw0yNDA3MDUxMTE1\nMDBaFw0zNDA3MDMxMTE1MDBaMIGEMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2Fs\naWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNjbzEgMB4GA1UEChMXY29tcGFu\neS5zdXBwbHljaGFpbi5jb20xJjAkBgNVBAMTHXRsc2NhLmNvbXBhbnkuc3VwcGx5\nY2hhaW4uY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfE5l5+yN9H3m8320\nPgHnuL48CVOqxOepKtAsZgQZDBryIkkGeYt/mCTG1Oq6tRvJlbcnHoDUvnKJhDnT\n02V2BaNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggr\nBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQiBCCl/Klh8umkn6ksU5wD\nu3zKnsUumqeABYxoehfWyYnm0DAKBggqhkjOPQQDAgNIADBFAiBZgPsb1mFZ25s1\nSab4YwJVH1+mWfWirBYfjYpo2bWHdgIhAMF77LJgRZNTq5AVAStTUIAnkfT6dB+R\nZkH73+lpW78L\n-----END CERTIFICATE-----\n"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

@@ -1,24 +1,37 @@
 {
-  "name": "exchangeblockchain",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "@nomiclabs/hardhat-ethers": "^2.2.3",
-    "@nomiclabs/hardhat-waffle": "^2.0.6",
-    "chai": "^4.4.1",
-    "ethereum-waffle": "^4.0.10",
-    "ethers": "^5.7.2",
-    "hardhat": "^2.22.3"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5"
-  }
+    "name": "exchangeblockchain",
+    "version": "1.0.0",
+    "main": "server.js",
+    "scripts": {
+        "start": "node -r dotenv/config server.js",
+        "dev": "nodemon -r dotenv/config server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "devDependencies": {
+        "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+        "@nomiclabs/hardhat-ethers": "^2.2.3",
+        "@nomiclabs/hardhat-waffle": "^2.0.6",
+        "chai": "^4.4.1",
+        "ethereum-waffle": "^4.0.10",
+        "ethers": "^5.7.2",
+        "hardhat": "^2.22.3"
+    },
+    "dependencies": {
+        "awilix": "^10.0.2",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "express-http-context": "^1.2.4",
+        "fabric-ca-client": "^2.2.20",
+        "fabric-network": "^2.2.20",
+        "http-status": "^1.4.2",
+        "mongodb": "^6.8.0",
+        "mongoose": "^8.4.4",
+        "nanoid": "^3.1.30",
+        "nodemon": "^3.1.0",
+        "winston": "^3.13.0"
+    }
 }

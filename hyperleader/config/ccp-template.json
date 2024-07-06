@@ -1,0 +1,35 @@
+{
+    "name": "fablo-test-network-${ORG}",
+    "description": "Connection profile for ${ORG} in the Fablo network",
+    "version": "1.0.0",
+    "client": {
+        "organization": "${ORG}"
+    },
+    "organizations": {
+        "${ORG}": {
+            "mspid": "${ORG}MSP",
+            "peers": ["peer0.${ORG}.supplychain.com"],
+            "certificateAuthorities": ["ca.${ORG}.supplychain.com"]
+        }
+    },
+    "peers": {
+        "peer0.${ORG}.supplychain.com": {
+            "url": "grpc://localhost:${PEERPORT}",
+            "tlsCACerts": {
+                "pem": "${PEERPEM}"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.${ORG}.supplychain.com": {
+            "url": "http://localhost:${CAPORT}",
+            "caName": "ca.${ORG}.supplychain.com",
+            "tlsCACerts": {
+                "pem": "${CAPEM}"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

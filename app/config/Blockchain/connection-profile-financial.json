@@ -1,0 +1,35 @@
+{
+    "name": "fablo-test-network-financial",
+    "description": "Connection profile for financial in the Fablo network",
+    "version": "1.0.0",
+    "client": {
+        "organization": "financial"
+    },
+    "organizations": {
+        "financial": {
+            "mspid": "financialMSP",
+            "peers": ["peer0.financial.supplychain.com"],
+            "certificateAuthorities": ["ca.financial.supplychain.com"]
+        }
+    },
+    "peers": {
+        "peer0.financial.supplychain.com": {
+            "url": "grpc://localhost:7061",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICfDCCAiOgAwIBAgIQQLRlbF+4JjIohr0wM4JjHjAKBggqhkjOPQQDAjCBiDEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xIjAgBgNVBAoTGWZpbmFuY2lhbC5zdXBwbHljaGFpbi5jb20xKDAm\nBgNVBAMTH3Rsc2NhLmZpbmFuY2lhbC5zdXBwbHljaGFpbi5jb20wHhcNMjQwNzA1\nMTExNTAwWhcNMzQwNzAzMTExNTAwWjCBiDELMAkGA1UEBhMCVVMxEzARBgNVBAgT\nCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xIjAgBgNVBAoTGWZp\nbmFuY2lhbC5zdXBwbHljaGFpbi5jb20xKDAmBgNVBAMTH3Rsc2NhLmZpbmFuY2lh\nbC5zdXBwbHljaGFpbi5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAARVmCAV\nXBE3j3xlTHI9n4SoiXXF1Y+Jtd1hBf2ZaMtiuAXwbBZ1kLO6Q0WcS9VEk/XJfoJq\ndR5YmXqqM+VAZwQmo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYB\nBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIL47QsOP\nArYMicfF41eeqn8/bMygkSO1aHAC0udFgPxJMAoGCCqGSM49BAMCA0cAMEQCICZs\nbjibxakjILAwkZj5ePREyUtV8cFbw7etO2eVNFR5AiBKMsei26CXmtbQ9Paoka1S\nC1JVrUsVI5E3cux4OlwrEQ==\n-----END CERTIFICATE-----\n"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.financial.supplychain.com": {
+            "url": "http://localhost:7060",
+            "caName": "ca.financial.supplychain.com",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICfDCCAiOgAwIBAgIQQLRlbF+4JjIohr0wM4JjHjAKBggqhkjOPQQDAjCBiDEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xIjAgBgNVBAoTGWZpbmFuY2lhbC5zdXBwbHljaGFpbi5jb20xKDAm\nBgNVBAMTH3Rsc2NhLmZpbmFuY2lhbC5zdXBwbHljaGFpbi5jb20wHhcNMjQwNzA1\nMTExNTAwWhcNMzQwNzAzMTExNTAwWjCBiDELMAkGA1UEBhMCVVMxEzARBgNVBAgT\nCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xIjAgBgNVBAoTGWZp\nbmFuY2lhbC5zdXBwbHljaGFpbi5jb20xKDAmBgNVBAMTH3Rsc2NhLmZpbmFuY2lh\nbC5zdXBwbHljaGFpbi5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAARVmCAV\nXBE3j3xlTHI9n4SoiXXF1Y+Jtd1hBf2ZaMtiuAXwbBZ1kLO6Q0WcS9VEk/XJfoJq\ndR5YmXqqM+VAZwQmo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYB\nBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIL47QsOP\nArYMicfF41eeqn8/bMygkSO1aHAC0udFgPxJMAoGCCqGSM49BAMCA0cAMEQCICZs\nbjibxakjILAwkZj5ePREyUtV8cFbw7etO2eVNFR5AiBKMsei26CXmtbQ9Paoka1S\nC1JVrUsVI5E3cux4OlwrEQ==\n-----END CERTIFICATE-----\n"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}
