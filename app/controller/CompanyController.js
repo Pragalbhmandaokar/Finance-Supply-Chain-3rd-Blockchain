@@ -1,21 +1,37 @@
-"use strict";
 const BaseController = require("./BaseController");
 const { Wallets } = require("fabric-network");
 const FabricCAServices = require("fabric-ca-client");
 const fs = require("fs");
 
-class BankController extends BaseController {
+class CompanyController extends BaseController {
   constructor(opts) {
-    super(opts, "BankController", "bankService", "financeChain");
+    super(opts, "CompanyController", "companyService", "companyChain");
     this.logger = opts.logger;
     this.path = opts.path;
   }
 
-  async createBank(req, res, next) {
-    this.logger.info("bankController Bank Register");
+  async createCompany(req, res, next) {
+    this.logger.info(`${this.name} Company Registering`);
     try {
       const { body } = req;
-      const dbResult = await this.service.createBank(body);
+
+      console.log(body.Name);
+      const { result, transactionDetails } = await this.chain.createCompany(
+        body
+      );
+
+      if (result == undefined) {
+        res.send("Result is empty");
+      }
+
+      const UpdatedResult = {
+        blockchain_network: "Binance",
+        companyName: body.Name,
+        transactionID: transactionDetails.transactionID,
+      };
+
+      const dbResult = await this.service.create(UpdatedResult);
+      this.logger.info("Financial Request generated");
       res.send(dbResult);
     } catch (err) {
       this.logger.error(err.message);
@@ -23,7 +39,42 @@ class BankController extends BaseController {
     }
   }
 
-  async initBankUser(req, res, next) {
+  async companyLogin(req, res, next) {
+    this.logger.info("Trying to login");
+    try {
+      const { body } = req;
+      const loginResult = await this.service.companyLogin(body);
+      this.logger.info("Login Successful");
+      res.send(loginResult);
+    } catch (err) {
+      this.logger.error(err.message);
+      res.send(err);
+    }
+  }
+  async getCompanyById(req, res, next) {
+    try {
+      const { body } = req;
+      this.logger.info("CompanyController - getCompanyByID()");
+      const response = await this.chain.getCompany(body);
+      this.logger.info("CompanyController - getCompanyByID() Completed");
+      res.send(response);
+    } catch (err) {
+      this.logger.error(err.message);
+      res.send(err);
+    }
+  }
+  async getCompanyList(req, res, next) {
+    try {
+      this.logger.info("CompanyController - getCompanyList()");
+      const response = await this.chain.getCompanyList();
+      this.logger.info("CompanyController - getCompanyList() Completed");
+      res.send(response);
+    } catch (err) {
+      this.logger.error(err.message);
+      res.send(err);
+    }
+  }
+  async initCompanyUser(req, res, next) {
     this.logger.info("calling enroll Admin method");
     try {
       const { body } = req;
@@ -32,11 +83,11 @@ class BankController extends BaseController {
         "../../",
         "hyperleader",
         "config",
-        "connection-profile-financial.json"
+        "connection-profile-company.json"
       );
       const ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
 
-      const caInfo = ccp.certificateAuthorities["ca.financial.supplychain.com"];
+      const caInfo = ccp.certificateAuthorities["ca.company.supplychain.com"];
       const caTLSCACerts = caInfo.tlsCACerts.pem;
 
       const ca = new FabricCAServices(
@@ -48,7 +99,7 @@ class BankController extends BaseController {
         caInfo.caName
       );
 
-      const walletPath = this.path.join(process.cwd(), "financial-wallet");
+      const walletPath = this.path.join(process.cwd(), "company-wallet");
 
       const wallet = await Wallets.newFileSystemWallet(walletPath);
 
@@ -67,7 +118,7 @@ class BankController extends BaseController {
             certificate: enrollment.certificate,
             privateKey: enrollment.key.toBytes(),
           },
-          mspId: "FinancialMSP",
+          mspId: "CompanyMSP",
           type: "X.509",
         };
         await wallet.put("admin", x509Identity);
@@ -103,7 +154,7 @@ class BankController extends BaseController {
             enrollmentSecret: secret,
           });
 
-          let orgMSPId = "FinancialMSP";
+          let orgMSPId = "CompanyMSP";
 
           privateKey = enrollment.key.toBytes();
 
@@ -130,5 +181,4 @@ class BankController extends BaseController {
     }
   }
 }
-
-module.exports = BankController;
+module.exports = CompanyController;

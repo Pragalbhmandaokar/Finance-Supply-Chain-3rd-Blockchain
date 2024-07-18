@@ -1,5 +1,5 @@
-const { mainBNB } = require("../../scripts/InteractiveBnc");
-const { main } = require("../../scripts/InteractiveWithoutHardhat");
+const { mainBNB } = require("../../blockchain/scripts/InteractiveBnc");
+const { main } = require("../../blockchain/scripts/InteractiveWithoutHardhat");
 
 exports.addProduct = async (req, res) => {
   try {

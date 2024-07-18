@@ -25,5 +25,11 @@ module.exports = {
         "b2dab2312d4d942fe4418b6868300126295462250ac7af09817076f5457ef49b",
       ],
     },
+    polygon: {
+      url: "https://polygon-amoy.g.alchemy.com/v2/5csQE0QL2nb5twnWBDP8RidcUcb3EWji",
+      accounts: [
+        "b2dab2312d4d942fe4418b6868300126295462250ac7af09817076f5457ef49b",
+      ],
+    },
   },
 };

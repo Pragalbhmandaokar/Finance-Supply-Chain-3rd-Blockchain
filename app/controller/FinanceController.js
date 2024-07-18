@@ -2,7 +2,8 @@ const BaseController = require("./BaseController");
 
 class FinanceController extends BaseController {
   constructor(opts) {
-    super(opts, "FinanceController", "financeService");
+    console.log("index");
+    super(opts, "FinanceController", "financeService", "financeChain");
     this.logger = opts.logger;
     this.path = opts.path;
   }
@@ -15,11 +16,13 @@ class FinanceController extends BaseController {
       if (result == undefined) {
         res.send("Result is empty");
       }
+
       const UpdatedResult = {
         bankId: body.userId,
         transactionID: transactionDetails.transactionID,
       };
-      const dbResult = this.service.create(UpdatedResult);
+      const dbResult = await this.service.create(UpdatedResult);
+
       this.logger.info("Financial Request generated");
       res.send(dbResult);
     } catch (err) {

@@ -1,22 +1,17 @@
 class BaseService {
-  constructor(opts, modelName = "") {
+  constructor(opts, modelName = "", blockchainName) {
     this.logger = opts.logger;
     this.modelName = modelName;
+    this.chain = opts[blockchainName];
     this.databaseService = opts.databaseService;
-    this.schemasWithCreator = ["Transaction", "banks", "finance"];
+    this.schemasWithCreator = ["Transaction", "banks", "Company", "Invoice"];
   }
 
-  async create(body, user) {
-    if (this.schemasWithCreator.indexOf(this.modelName) > -1) {
-      body.additional_metadata = {
-        author: {
-          _id: user._id,
-        },
-      };
-    }
+  async create(body) {
+    console.log(body);
     const result = await this.databaseService.create(this.modelName, body);
     this.logger.info(`${this.modelName} created successfully`);
-    return result.toJSON();
+    return result;
   }
 
   async get(id) {
