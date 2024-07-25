@@ -5,11 +5,6 @@ const { createServer } = require("http");
 const serviceLocator = require("./app/lib/service_locator");
 const cors = require("cors");
 const httpContext = require("express-http-context");
-const { getBncContract } = require("./blockchain/scripts/InteractiveBnc");
-const { mainBNB } = require("./blockchain/scripts/InteractiveBnc");
-const {
-  getEthContract,
-} = require("./blockchain/scripts/InteractiveWithoutHardhat");
 const logger = serviceLocator.get("logger");
 const config = require("./app/config/configs");
 const Database = require("./app/config/Database");
@@ -33,8 +28,42 @@ async function setupEventListeners() {
       );
     console.log("Contract instance retrieved");
 
-    contract.on("*", (event) => {
-      console.log("Event detected:", event);
+    contract.on("*", async (event) => {
+      if (event.event == "InvoiceApproved") {
+        const notifyBody = {
+          NotificationType: "INVOICE_APPROVED",
+          invoiceId: event.transactionHash,
+          SupplierId: event.args[0].toString() || "0",
+          BuyerId: event.args[1].toString(),
+        };
+        try {
+          logger.info("Invoice Approval Triggered");
+          const notificationBuilder = await serviceLocator
+            .get("notificationService")
+            .createNotification(notifyBody);
+          console.log(notificationBuilder);
+        } catch (err) {
+          console.log("Err: ", err);
+        }
+      }
+
+      if (event.event == "InvoiceCreated") {
+        const notifyBody = {
+          NotificationType: "INVOICE_GENERATED",
+          invoiceId: event.transactionHash,
+          SupplierId: event.args[0].toString() || "0",
+          BuyerId: event.args[1].toString(),
+        };
+        try {
+          logger.info("Invoice Approval Triggered");
+          const notificationBuilder = await serviceLocator
+            .get("notificationService")
+            .createNotification(notifyBody);
+          console.log(notificationBuilder);
+        } catch (err) {
+          console.log("Err: ", err);
+        }
+      }
     });
 
     console.log("Event listener setup complete.");

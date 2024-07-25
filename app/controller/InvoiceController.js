@@ -4,7 +4,7 @@ class InvoiceController extends BaseController {
   constructor(opts) {
     console.log("called");
     // super(opts, "FinanceController", "financeService", "financeChain");
-    super(opts, "InvoiceController", "invoiceChain", "invoiceChain");
+    super(opts, "InvoiceController", "invoiceService", "invoiceChain");
     this.logger = opts.logger;
     this.path = opts.path;
   }
@@ -13,7 +13,12 @@ class InvoiceController extends BaseController {
     try {
       const { body } = req;
       const chainResult = await this.chain.createInvoice(body);
-      res.send(chainResult);
+      const dbData = {
+        InvoiceId: chainResult.transactionId,
+        blockchain_network: "Ethereum",
+      };
+      const dbResult = await this.service.create(dbData);
+      res.send(dbResult);
     } catch (err) {
       this.logger.error("InvoiceController" + err.message);
       next(err);

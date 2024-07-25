@@ -9,6 +9,7 @@ const BankSchema = new mongoose.Schema({
   contact_information: { type: String, required: true },
   credit_rating: { type: String, required: true },
   blockchain_network: String,
+  bankAddress: { type: String, required: true },
   verified: {
     type: Boolean,
     required: true,

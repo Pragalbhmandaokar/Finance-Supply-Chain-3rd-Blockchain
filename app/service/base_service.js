@@ -1,5 +1,5 @@
 class BaseService {
-  constructor(opts, modelName = "", blockchainName) {
+  constructor(opts, modelName = "", blockchainName = "financeChain") {
     this.logger = opts.logger;
     this.modelName = modelName;
     this.chain = opts[blockchainName];
@@ -8,7 +8,6 @@ class BaseService {
   }
 
   async create(body) {
-    console.log(body);
     const result = await this.databaseService.create(this.modelName, body);
     this.logger.info(`${this.modelName} created successfully`);
     return result;
@@ -16,6 +15,7 @@ class BaseService {
 
   async get(id) {
     const result = await this.databaseService.getById(this.modelName, id);
+    console.log(result);
     if (!result) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,

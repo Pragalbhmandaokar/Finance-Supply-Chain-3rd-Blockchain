@@ -5,7 +5,6 @@ class BaseController {
     serviceName,
     blockchainName = "blockchainService"
   ) {
-    console.log(blockchainName);
     this.logger = opts.logger;
     this.service = opts[serviceName];
     this.chain = opts[blockchainName];

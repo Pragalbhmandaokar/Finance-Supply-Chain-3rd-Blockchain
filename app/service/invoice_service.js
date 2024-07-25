@@ -2,9 +2,12 @@ const BaseService = require("./base_service");
 
 class InvoiceService extends BaseService {
   constructor(opts) {
-    console.log("service");
-    super(opts, "invoice");
+    super(opts, "invoice", "invoiceChain");
     this.logger = opts.logger;
+  }
+
+  async createInvoice() {
+    this.logger.info("called");
   }
 }
 

@@ -14,8 +14,8 @@ ServiceLocator.prototype.register = function () {
   this.container
     .loadModules(
       [
-        "./app/blockchainservice/*.js",
         "./app/service/*.js",
+        "./app/blockchainservice/*.js",
         "./app/controller/*.js",
       ],
       {

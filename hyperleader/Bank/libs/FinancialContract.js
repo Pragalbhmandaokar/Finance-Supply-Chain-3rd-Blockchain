@@ -7,20 +7,20 @@ class FinancialContract extends Contract {
     console.log("Financial Ledger Initialized");
   }
 
-  async createFinancingRequest(ctx, bank, amount, supplier, buyer) {
+  async createFinancingRequest(ctx, bank, amount) {
     const clientOrg = ctx.clientIdentity.getMSPID();
-    if (clientOrg !== "FinancialMSP") {
+    if (clientOrg !== "financialMSP") {
       throw new Error(
         `Client of org ${clientOrg} is not authorized to create a token `
       );
     }
 
+    const supplier = ctx.clientIdentity.getID();
     const requestId = `${supplier}:${Date.now()}`;
     const financingRequest = {
       docType: "financingRequest",
       supplier,
       bank,
-      buyer,
       amount,
       approved: false,
       disbursed: false,

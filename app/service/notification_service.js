@@ -2,13 +2,13 @@ const BaseService = require("./base_service");
 
 class NotificationService extends BaseService {
   constructor(opts) {
+    console.log("called");
     super(opts, "notification");
     this.logger = opts.logger;
   }
 
   async createNotification(body) {
-    const { invoiceId, SupplierId, BuyerId } = body;
-    const NotificationType = "INVOICE_GENERATED";
+    const { invoiceId, SupplierId, BuyerId, NotificationType } = body;
 
     this.logger.info("bankService register bank");
     const notificationBody = {
