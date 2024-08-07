@@ -1,0 +1,77 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "G:\\newProjects\\exchangeBlockchainProject\\exchangeBlockchain\\blockchain\\contracts\\InvoiceContracts.sol": {
+      "lastModificationDate": 1721318551817,
+      "contentHash": "160d3670cb91560e6fdb3ccfc6021ff6",
+      "sourceName": "contracts/InvoiceContracts.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "EnhancedInvoiceContract"
+      ]
+    },
+    "G:\\newProjects\\exchangeBlockchainProject\\exchangeBlockchain\\blockchain\\contracts\\PaymentContract.sol": {
+      "lastModificationDate": 1720103083127,
+      "contentHash": "283189bff57d3de3eb3078df68d84feb",
+      "sourceName": "contracts/PaymentContract.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PaymentContract"
+      ]
+    }
+  }
+}

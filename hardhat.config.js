@@ -3,7 +3,16 @@ require("@nomiclabs/hardhat-ethers");
 
 module.exports = {
   solidity: "0.8.24",
+  paths: {
+    sources: "./contracts",
+    tests: "./test",
+    cache: "./cache",
+    artifacts: "./artifacts",
+  },
   networks: {
+    ganache: {
+      url: "HTTP://127.0.0.1:7545",
+    },
     bscTestnet: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
       accounts: [

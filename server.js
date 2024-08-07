@@ -3,22 +3,78 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const { createServer } = require("http");
 const serviceLocator = require("./app/lib/service_locator");
+const cors = require("cors");
 const httpContext = require("express-http-context");
-const { BncContract } = require("./scripts/InteractiveBnc");
-const { mainBNB } = require("./scripts/InteractiveBnc");
-const { getEthContract } = require("./scripts/InteractiveWithoutHardhat");
 const logger = serviceLocator.get("logger");
 const config = require("./app/config/configs");
 const Database = require("./app/config/Database");
 const routesV1 = require("./app/router");
 
 const server = express();
+server.use(cors("*"));
 server.use(bodyParser.json());
 server.use(httpContext.middleware);
 const routerV1 = express.Router();
 server.use(routerV1);
 routesV1(routerV1, serviceLocator);
 const httpServer = createServer(server);
+
+async function setupEventListeners() {
+  try {
+    const contract = await serviceLocator
+      .get("invoiceChain")
+      .getContract(
+        "440ff6184ca2a5fa5d072d60bd2e3bc1b0ef2d2f9dbc50f6328a3f3e04ebcd8c"
+      );
+    console.log("Contract instance retrieved");
+
+    contract.on("*", async (event) => {
+      if (event.event == "InvoiceApproved") {
+        const notifyBody = {
+          NotificationType: "INVOICE_APPROVED",
+          invoiceId: event.transactionHash,
+          SupplierId: event.args[0].toString() || "0",
+          BuyerId: event.args[1].toString(),
+        };
+        try {
+          logger.info("Invoice Approval Triggered");
+          const notificationBuilder = await serviceLocator
+            .get("notificationService")
+            .createNotification(notifyBody);
+          console.log(notificationBuilder);
+        } catch (err) {
+          console.log("Err: ", err);
+        }
+      }
+
+      if (event.event == "InvoiceCreated") {
+        const notifyBody = {
+          NotificationType: "INVOICE_GENERATED",
+          invoiceId: event.transactionHash,
+          SupplierId: event.args[0].toString() || "0",
+          BuyerId: event.args[1].toString(),
+        };
+        try {
+          logger.info("Invoice Approval Triggered");
+          const notificationBuilder = await serviceLocator
+            .get("notificationService")
+            .createNotification(notifyBody);
+          console.log(notificationBuilder);
+        } catch (err) {
+          console.log("Err: ", err);
+        }
+      }
+    });
+
+    console.log("Event listener setup complete.");
+  } catch (err) {
+    console.error("error in creating interactive script", err);
+  }
+}
+
+setupEventListeners()
+  .then(() => console.log("Event listeners set up."))
+  .catch(console.error);
 
 const startServer = async () => {
   await Database._connect();
@@ -43,23 +99,5 @@ const startServer = async () => {
     );
   });
 };
-startServer();
 
-async function interactiveScript() {
-  try {
-    const EthContract = await getEthContract();
-    EthContract.on("AssetAdded", async (newProductId) => {
-      try {
-        console.log("Trigger Called");
-        const result = await mainBNB(newProductId);
-        console.log(result);
-      } catch (err) {
-        console.error("Error in /addProduct:", err);
-        //res.status(500).json({ err: "Internal server error" });
-      }
-    });
-  } catch (err) {
-    console.error("error in creating interactive script", err);
-  }
-}
-interactiveScript();
+startServer();

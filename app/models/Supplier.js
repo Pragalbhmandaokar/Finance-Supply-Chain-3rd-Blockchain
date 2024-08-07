@@ -7,7 +7,15 @@ const SupplierSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  supplier_contract_id: {
+  supplier_contract: {
+    type: String,
+    required: true,
+  },
+  credit_rating: {
+    type: String,
+    required: true,
+  },
+  country: {
     type: String,
     required: true,
   },

@@ -3,6 +3,7 @@ const awilix = require("awilix");
 const configs = require("../config/configs");
 const logger = require("./logger").create(configs.application_logging);
 const { Gateway, Wallets } = require("fabric-network");
+const { ethers } = require("ethers");
 
 function ServiceLocator() {
   this.container = awilix.createContainer();
@@ -37,6 +38,9 @@ ServiceLocator.prototype.register = function () {
     })
     .register({
       configs: awilix.asValue(configs),
+    })
+    .register({
+      ethers: awilix.asValue(ethers),
     })
     .register({
       monogdb: awilix.asValue(require("mongodb")),

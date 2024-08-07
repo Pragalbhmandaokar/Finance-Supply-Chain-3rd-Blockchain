@@ -1,12 +1,13 @@
 "use strict";
 const BaseController = require("./BaseController");
-const { Gateway, Wallets } = require("fabric-network");
+const { Wallets } = require("fabric-network");
 const FabricCAServices = require("fabric-ca-client");
 const fs = require("fs");
+const jwt = require("jsonwebtoken");
 
 class BankController extends BaseController {
   constructor(opts) {
-    super(opts, "BankController", "bankService");
+    super(opts, "BankController", "bankService", "financeChain");
     this.logger = opts.logger;
     this.path = opts.path;
   }
@@ -20,6 +21,26 @@ class BankController extends BaseController {
     } catch (err) {
       this.logger.error(err.message);
       next(err);
+    }
+  }
+
+  async login(req, res, next) {
+    this.logger.info("bankController() - Bank Login");
+    try {
+      const { body } = req;
+      console.log(body.bankId);
+      const bank = await this.service.get(body.bankId);
+      console.log(bank);
+      if (!bank) {
+        res.send("No Username found");
+      }
+      const token = jwt.sign({ username: bank._id }, "SECRET_KEY", {
+        expiresIn: "1h",
+      });
+      res.send({ result: token, login_type: "BANK_LOGIN" });
+    } catch (err) {
+      this.logger.info("bankController() - Bank Login Error");
+      res.send(err);
     }
   }
 
