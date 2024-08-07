@@ -4,7 +4,7 @@ async function main() {
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address);
 
-  const Balance = await ethers.getContractFactory("EnhancedInvoiceContract");
+  const Balance = await ethers.getContractFactory("PaymentContract");
   const balance = await Balance.deploy();
 
   // Wait for the contract to be mined

@@ -2,89 +2,117 @@
 
 const { Contract } = require("fabric-contract-api");
 
-class CompanyContract extends Contract {
+class FinancialContract extends Contract {
   async initLedger(ctx) {
-    console.log("Initialization of the ledger");
+    console.log("Financial Ledger Initialized");
   }
 
-  async registerCompany(
-    ctx,
-    companyAddress,
-    name,
-    companyType,
-    country,
-    contract,
-    credit_rating,
-    blockchain_network,
-    verified,
-    sort_code,
-    post_code
-  ) {
+  async createFinancingRequest(ctx, bank, amount, supplier, buyer) {
     const clientOrg = ctx.clientIdentity.getMSPID();
-    if (clientOrg !== "CompanyMSP") {
+    if (clientOrg !== "FinancialMSP") {
       throw new Error(
-        `Client of org ${clientOrg} is not authorized to create a token `
+        `Client of org ${clientOrg} is not authorized to create a token`
       );
     }
 
-    // get id of the user
-    const minter = ctx.clientIdentity.getID();
-
-    const company = {
-      docType: "company",
-      name,
-      companyType,
-      country,
-      contract,
-      credit_rating,
-      blockchain_network,
-      verified,
-      sort_code,
-      post_code,
-      registrationDate: new Date().toISOString(),
-      minter,
+    const requestId = `${supplier}:${Date.now()}`;
+    const financingRequest = {
+      docType: "financingRequest",
+      supplier,
+      bank,
+      buyer,
+      amount,
+      approved: false,
+      disbursed: false,
+      approvalTimestamp: null,
+      disbursementTimestamp: null,
     };
 
     await ctx.stub.putState(
-      companyAddress,
-      Buffer.from(JSON.stringify(company))
+      requestId,
+      Buffer.from(JSON.stringify(financingRequest))
     );
-    console.log(`Company ${name} registered successfully.`);
-    return JSON.stringify(company);
+    console.log(`Financing Request Created: Request ID ${requestId}`);
+    return JSON.stringify(financingRequest);
   }
 
-  async getCompany(ctx, companyAddress) {
-    const companyBytes = await ctx.stub.getState(companyAddress);
-    if (!companyBytes || companyBytes.length === 0) {
-      throw new Error(`Company with address ${companyAddress} does not exist.`);
+  async approveFinancingRequest(ctx, requestId) {
+    const requestAsBytes = await ctx.stub.getState(requestId);
+    if (!requestAsBytes || requestAsBytes.length === 0) {
+      throw new Error(`Request ${requestId} does not exist.`);
     }
-    console.log(`Company retrieved: ${companyBytes.toString()}`);
-    return companyBytes.toString();
+
+    const request = JSON.parse(requestAsBytes.toString());
+    request.approved = true;
+    request.approvalTimestamp = new Date().toISOString();
+
+    await ctx.stub.putState(requestId, Buffer.from(JSON.stringify(request)));
+    console.log(`Financing Request Approved: Request ID ${requestId}`);
+    return JSON.stringify(request);
   }
 
-  async getCompanyList(ctx) {
+  async disburseFunds(ctx, requestId) {
+    const requestAsBytes = await ctx.stub.getState(requestId);
+    if (!requestAsBytes || requestAsBytes.length === 0) {
+      throw new Error(`Request ${requestId} does not exist.`);
+    }
+
+    const request = JSON.parse(requestAsBytes.toString());
+    if (!request.approved) {
+      throw new Error("Request must be approved before disbursement.");
+    }
+    if (request.disbursed) {
+      throw new Error("Funds have already been disbursed.");
+    }
+
+    request.disbursed = true;
+    request.disbursementTimestamp = new Date().toISOString();
+
+    await ctx.stub.putState(requestId, Buffer.from(JSON.stringify(request)));
+    console.log(`Funds Disbursed: Request ID ${requestId}`);
+    return JSON.stringify(request);
+  }
+
+  async getFinancingRequest(ctx, requestId) {
+    const requestAsBytes = await ctx.stub.getState(requestId);
+    if (!requestAsBytes || requestAsBytes.length === 0) {
+      throw new Error(`Request ${requestId} does not exist.`);
+    }
+    console.log(`Financing Request Retrieved: Request ID ${requestId}`);
+    return requestAsBytes.toString();
+  }
+
+  async fetchAllFinancialRequests(ctx) {
+    const queryString = {
+      selector: {
+        docType: "financingRequest",
+      },
+    };
+
+    const iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString));
     const allResults = [];
-    const iterator = await ctx.stub.getStateByRange("", "");
-    let result = await iterator.next();
-    while (!result.done) {
-      const strValue = Buffer.from(result.value.value.toString()).toString(
-        "utf8"
-      );
-      let record;
-      try {
-        record = JSON.parse(strValue);
-        if (record.docType === "company") {
-          allResults.push({ Key: result.value.key, Record: record });
+
+    while (true) {
+      const res = await iterator.next();
+      if (res.value && res.value.value.toString()) {
+        let record;
+        try {
+          record = JSON.parse(res.value.value.toString());
+        } catch (err) {
+          console.log(err);
+          record = res.value.value.toString();
         }
-      } catch (err) {
-        console.log(err);
-        result = await iterator.next();
-        continue;
+        allResults.push(record);
       }
-      result = await iterator.next();
+      if (res.done) {
+        await iterator.close();
+        break;
+      }
     }
+
+    console.log("All Financial Requests Retrieved");
     return JSON.stringify(allResults);
   }
 }
 
-module.exports = CompanyContract;
+module.exports = FinancialContract;

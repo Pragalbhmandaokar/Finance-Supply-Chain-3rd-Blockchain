@@ -3,6 +3,7 @@ const financeRoutes = require("./finance_router");
 const companyRoutes = require("./company_router");
 const invoiceRoutes = require("./invoice_router");
 const blockchainRoutes = require("./blockchain_router");
+
 module.exports = (router, serviceLocator) => {
   bankRoutes.routes(router, serviceLocator);
   financeRoutes.routes(router, serviceLocator);

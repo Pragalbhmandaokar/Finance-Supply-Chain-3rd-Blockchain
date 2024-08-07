@@ -11,7 +11,7 @@ class FinancialContract extends Contract {
     const clientOrg = ctx.clientIdentity.getMSPID();
     if (clientOrg !== "FinancialMSP") {
       throw new Error(
-        `Client of org ${clientOrg} is not authorized to create a token `
+        `Client of org ${clientOrg} is not authorized to create a token`
       );
     }
 
@@ -80,6 +80,38 @@ class FinancialContract extends Contract {
     }
     console.log(`Financing Request Retrieved: Request ID ${requestId}`);
     return requestAsBytes.toString();
+  }
+
+  async fetchAllFinancialRequests(ctx) {
+    const queryString = {
+      selector: {
+        docType: "financingRequest",
+      },
+    };
+
+    const iterator = await ctx.stub.getQueryResult(JSON.stringify(queryString));
+    const allResults = [];
+
+    while (true) {
+      const res = await iterator.next();
+      if (res.value && res.value.value.toString()) {
+        let record;
+        try {
+          record = JSON.parse(res.value.value.toString());
+        } catch (err) {
+          console.log(err);
+          record = res.value.value.toString();
+        }
+        allResults.push(record);
+      }
+      if (res.done) {
+        await iterator.close();
+        break;
+      }
+    }
+
+    console.log("All Financial Requests Retrieved");
+    return JSON.stringify(allResults);
   }
 }
 

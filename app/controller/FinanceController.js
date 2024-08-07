@@ -31,11 +31,23 @@ class FinanceController extends BaseController {
     }
   }
 
-  async updateFinancial(res, req, next) {
+  async updateFinancial(req, res, next) {
     this.logger.info("Updating Finanical Request");
     try {
       this.logger.info("Updated Financial Request");
       res.send("resut");
+    } catch (err) {
+      this.logger.error(err.message);
+      res.error(err.message);
+    }
+  }
+
+  async getFinancingRequest(req, res, next) {
+    this.logger.info("getting financial Request");
+    try {
+      const { result } = await this.chain.getFinancialRequest();
+      console.log(result);
+      res.send(result);
     } catch (err) {
       this.logger.error(err.message);
       res.error(err.message);

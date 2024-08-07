@@ -15,7 +15,7 @@ class FinanceChain {
 
   async financialRequesting(body) {
     this.logger.info("creating financial Request");
-    const { functionName, args } = body;
+    const { args } = body;
     try {
       const ccpPath = await getFinancialCppPath();
 
@@ -48,7 +48,7 @@ class FinanceChain {
       const contract = network.getContract("financeChaincode");
 
       // Submit the specified transaction
-      const transaction = contract.createTransaction(functionName);
+      const transaction = contract.createTransaction("createFinancingRequest");
       const result = await transaction.submit(...args);
 
       this.logger.info(
@@ -60,6 +60,55 @@ class FinanceChain {
       return {
         result: result.toString(),
         transactionDetails: { transactionID: transaction.getTransactionId() },
+      };
+    } catch (error) {
+      console.error(`Failed to submit transaction: ${error}`);
+      return error.toString();
+    }
+  }
+
+  async getFinancialRequest() {
+    this.logger.info("creating financial Request");
+
+    try {
+      const ccpPath = await getFinancialCppPath();
+
+      const ccp = ccpPath;
+
+      const walletPath = this.path.join(process.cwd(), "financial-wallet");
+      const wallet = await Wallets.newFileSystemWallet(walletPath);
+
+      const identity = await wallet.get("admin");
+
+      if (!identity) {
+        this.logger.info(
+          'An identity for the admin user "admin" does not exist in the wallet'
+        );
+        this.logger.info("Run the enrollAdmin.js application before retrying");
+        return;
+      }
+
+      const gateway = new Gateway();
+
+      await gateway.connect(ccp, {
+        wallet,
+        identity,
+        discovery: { enabled: true, asLocalhost: true },
+      });
+
+      let network = await gateway.getNetwork("financialchannel");
+
+      this.logger.info("here");
+      const contract = network.getContract("financeChaincode");
+
+      // Submit the specified transaction
+      const response = await contract.evaluateTransaction(
+        "fetchAllFinancialRequests"
+      );
+      console.log("Company list retrieved:", response);
+
+      return {
+        result: response.toString(),
       };
     } catch (error) {
       console.error(`Failed to submit transaction: ${error}`);

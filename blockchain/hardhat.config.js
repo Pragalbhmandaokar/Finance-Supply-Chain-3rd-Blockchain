@@ -14,7 +14,9 @@ module.exports = {
       url: "HTTP://127.0.0.1:7545",
     },
     bscTestnet: {
-      url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+      url: "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+      chainId: 97,
+      gasPrice: 20000000000,
       accounts: [
         "b2dab2312d4d942fe4418b6868300126295462250ac7af09817076f5457ef49b",
       ],
